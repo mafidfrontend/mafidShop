@@ -3,17 +3,17 @@ import ProductCard from "@/companents/ProductCard";
 import Loading from "@/pages/_companents/Loading";
 import { CategoriesProductIdTYpe } from "@/type/Types";
 import axios from "axios";
-import { useParams } from "next/navigation";
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
 function NavbarPage() {
     const [categoriaId, setCategoriaId] =
         useState<CategoriesProductIdTYpe | null>(null);
-    const { id } = useParams();
+    const { query } = useRouter();
 
     useEffect(() => {
         axios
-            .get(`https://nt.softly.uz/api/front/products?page=${id}&limit=10`)
+            .get(`https://nt.softly.uz/api/front/products?page=${query}&limit=10`)
             .then((res) => {
                 console.log(res.data);
                 setCategoriaId(res.data);
@@ -21,7 +21,7 @@ function NavbarPage() {
             .catch((error) => {
                 console.error("API dan xatolik:", error);
             });
-    }, [id]);
+    }, [query]);
     if (!categoriaId) {
         return (
             <div>
