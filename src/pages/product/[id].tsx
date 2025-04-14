@@ -3,7 +3,6 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Loading from "../_companents/Loading";
 import Cards from "../_companents/Cards";
-import { useParams } from "next/navigation";
 import { ProductIdType } from "@/type/Types";
 import { useRouter } from "next/router";
 
@@ -46,7 +45,6 @@ function Product() {
           />
         </div>
 
-        {/* Mahsulot haqida ma'lumot */}
         <div className="w-full md:w-1/2">
           <h1 className="text-3xl font-bold text-gray-900 mb-4">
             {produktId.name}

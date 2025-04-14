@@ -3,28 +3,27 @@ export type TopCategoriesType = {
     description: string;
     id: number;
     name: string;
-  };
+};
 
-  export type CategoriesProductIdTYpe = {
-    items: | [] | {
-          categoryId: number;
-          createdAt: string;
-          description: string;
-          id: number;
-          imageUrl: string;
-          name: string;
-          price: string;
-          stock: number;
-        }[];
+export type CategoriesProductIdTYpe = {
+    items:
+        | []
+        | {
+              categoryId: number;
+              createdAt: string;
+              description: string;
+              id: number;
+              imageUrl: string;
+              name: string;
+              price: string;
+              stock: number;
+          }[];
     limit: number;
     page: number;
     totalItems: number;
-  };
+};
 
-
-
-
-  export type ProductIdType = {
+export type ProductIdType = {
     categoryId: number;
     createdAt: string;
     description: string;
@@ -33,25 +32,23 @@ export type TopCategoriesType = {
     name: string;
     price: string;
     stock: number;
-  };
-  
+};
 
-  
 export type CardsDataType = {
-  categoryId: number;
-  createdAt: string;
-  description: string;
-  id: number;
-  imageUrl: string;
-  name: string;
-  price: string;
-  stock: number;
+    categoryId: number;
+    createdAt: string;
+    description: string;
+    id: number;
+    imageUrl: string;
+    name: string;
+    price: string;
+    stock: number;
 };
 
 export type BannerType = {
-  id: number;
-  title: string;
-  imageUrl: string;
-  isActive: boolean;
-  createdAt: string;
+    id: number;
+    title: string;
+    imageUrl: string;
+    isActive: boolean;
+    createdAt: string;
 };
