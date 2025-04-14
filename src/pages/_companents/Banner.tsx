@@ -32,7 +32,7 @@ const Banner = () => {
           aria-label="Previous slide"
           className="absolute top-1/2 left-4 z-20 -translate-y-1/2 p-2 bg-black/40 rounded-full text-white hover:bg-black/60 transition"
         >
-          <ArrowLeft className="w-6 h-6 md:w-7 md:h-7" />
+          <ArrowLeft className="w-6 h-6 md:w-7 md:h-7 cursor-pointer" />
         </button>
 
         <button
@@ -40,7 +40,7 @@ const Banner = () => {
           aria-label="Next slide"
           className="absolute top-1/2 right-4 z-20 -translate-y-1/2 p-2 bg-black/40 rounded-full text-white hover:bg-black/60 transition"
         >
-          <ArrowRight className="w-6 h-6 md:w-7 md:h-7" />
+          <ArrowRight className="w-6 h-6 md:w-7 md:h-7 cursor-pointer" />
         </button>
 
         {banners.length > 0 ? (

@@ -16,7 +16,7 @@ const NavTop = () => {
             <p className="hover:underline hover:text-blue-300 transition cursor-pointer">
               Bizning do'konlarimiz
             </p>
-            <button className="bg-blue-600 hover:bg-blue-700 px-4 py-1.5 rounded-md text-white text-sm transition-all">
+            <button className="bg-green-600 hover:bg-green-700 px-4 py-1.5 rounded-md text-white text-sm transition-all">
               Yuridik shaxslar uchun
             </button>
             <p className="hover:underline hover:text-blue-300 transition cursor-pointer">

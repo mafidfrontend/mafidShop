@@ -18,8 +18,8 @@ function NavCenter() {
       <div className="max-w-screen-xl mx-auto pt-6 flex flex-wrap justify-between items-center gap-4 px-4 md:px-12">
         <Link href="/">
           <div className="flex items-center gap-2 cursor-pointer">
-            <ShoppingBag className="w-6 h-6 text-blue-800" />
-            <h1 className="text-blue-800 text-2xl md:text-3xl font-bold">
+            <ShoppingBag className="w-6 h-6 text-green-800" />
+            <h1 className="text-green-800 text-2xl md:text-3xl font-bold">
               MAFID<span className="text-yellow-400">_shop</span>
             </h1>
           </div>
@@ -27,7 +27,7 @@ function NavCenter() {
 
         <button
           onClick={() => setKatalog(!katalog)}
-          className="bg-blue-600 text-white px-5 py-2 rounded flex items-center gap-2 hover:bg-blue-700 transition"
+          className="bg-green-600 text-white px-5 py-2 rounded flex items-center gap-2 hover:bg-green-700 transition cursor-pointer"
         >
           <Image
             width={25}
@@ -44,7 +44,7 @@ function NavCenter() {
             type="text"
             placeholder="Qidirish..."
           />
-          <button className="bg-blue-600 hover:bg-blue-700 px-4 py-2 transition-colors text-white">
+          <button className="bg-green-600 hover:bg-green-700 px-4 py-2 transition-colors text-white">
             <Image width={24} height={24} src={search} alt="Qidirish" />
           </button>
         </div>
