@@ -10,7 +10,6 @@ function NavBottom() {
   useEffect(() => {
     axios.get("https://nt.softly.uz/api/front/categories").then((res) => {
       setTopKAtigorues(res.data);
-      console.log(res.data);
     });
   }, []);
 
