@@ -12,7 +12,7 @@ function Cart() {
       ) : (
         cartItems.map((item) => (
           <div key={item.id} className="mb-2 p-2 border-b">
-            <h2>{item.name}</h2>
+            <h2>{item.description}</h2>
             <p>${item.price}</p>
           </div>
         ))

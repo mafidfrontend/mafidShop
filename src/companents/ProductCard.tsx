@@ -5,6 +5,10 @@ import Link from "next/link";
 import { CardsDataType } from "@/type/Types";
 import { useDispatch } from "react-redux";
 import { addToCart } from "@/store/slices/cartSlice";
+import { Heart } from "lucide-react";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
+import { toggleFavorite } from "@/store/slices/favoritesSlice";
 
 function ProductCard({ item }: { item?: CardsDataType }) {
     if (!item) {
@@ -17,8 +21,11 @@ function ProductCard({ item }: { item?: CardsDataType }) {
 
     const dispatch = useDispatch();
 
+    const favorites = useSelector((state: RootState) => state.favorites.items);
+    const isFavorite = favorites.some((fav) => fav.id === item.id);
+
     return (
-        <div className="bg-white mt-12 shadow-md rounded-lg p-4 max-w-[250px] mb-5 flex flex-col justify-between">
+        <div className="bg-white mt-12 shadow-md rounded-lg p-4 max-w-[250px] mb-5 flex flex-col justify-between relative">
             <Link href={`/product/${item.id}`}>
                 <div>
                     {item.imageUrl ? (
@@ -44,9 +51,27 @@ function ProductCard({ item }: { item?: CardsDataType }) {
                     <p className="text-lg font-semibold text-gray-900">
                         {item.price ? `$${item.price}` : "Narx noma’lum"}
                     </p>
-                    <button onClick={() => dispatch(addToCart(item))} className="border-2 border-blue-500 p-2 rounded-md hover:bg-blue-800 hover:text-white transition">
+                    <button
+                        onClick={() => dispatch(addToCart(item))}
+                        className="border-2 border-blue-500 p-2 rounded-md hover:bg-blue-800 hover:text-white transition"
+                    >
                         <Image width={30} height={30} src={savat} alt="savat" />
                     </button>
+                    <div className="absolute top-3 right-3">
+                        <button
+                            onClick={() => dispatch(toggleFavorite(item))}
+                            className={`p-2 rounded-md transition ${
+                                isFavorite
+                                    ? "bg-red-500 text-white"
+                                    : "border-red-500 hover:bg-red-500 hover:text-white"
+                            }`}
+                        >
+                            <Heart
+                                size={20}
+                                fill={isFavorite ? "white" : "none"}
+                            />
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
