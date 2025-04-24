@@ -13,7 +13,7 @@ function NavbarPage() {
 
     useEffect(() => {
         axios
-            .get(`https://nt.softly.uz/api/front/products?page=${query}&limit=10`)
+            .get(`https://nt.softly.uz/api/products?page=${query}&limit=10`)
             .then((res) => {
                 console.log(res.data);
                 setCategoriaId(res.data);

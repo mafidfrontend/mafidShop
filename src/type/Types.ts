@@ -52,3 +52,10 @@ export type BannerType = {
     isActive: boolean;
     createdAt: string;
 };
+
+export type AuthType = {
+    email: string;
+    password: string;
+};
+
+export type UserType = {}

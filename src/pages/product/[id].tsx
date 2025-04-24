@@ -9,13 +9,13 @@ import { useRouter } from "next/router";
 function Product() {
   const [produktId, setProduktId] = useState<ProductIdType | null>(null);
   const params = useRouter();
-  const id = params.query;
+  const { id } = params.query;
 
   useEffect(() => {
     if (!id) return;
 
     axios
-      .get(`https://nt.softly.uz/api/front/products/${id}`)
+      .get(`https://nt.softly.uz/api/products/${id}`)
       .then((res) => {
         setProduktId(res.data);
       })
