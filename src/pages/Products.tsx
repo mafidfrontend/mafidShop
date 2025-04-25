@@ -1,0 +1,47 @@
+import { GetServerSideProps } from "next";
+import Head from "next/head";
+import { CardsDataType } from "@/type/Types";
+import ProductCard from "@/companents/ProductCard";
+
+type Props = {
+    product: CardsDataType;
+};
+
+export default function ProductPage({ product }: Props) {
+    return (
+        <>
+            <div className="flex justify-center">
+                <ProductCard item={product} />
+            </div>
+        </>
+    );
+}
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { id } = context.params!;
+
+    try {
+        const res = await fetch(`https://nt.softly.uz/api/products/${id}/`);
+        const item = await res.json();
+
+        const product: CardsDataType = {
+            id: item.id,
+            name: item.name,
+            description: item.description,
+            price: item.price,
+            imageUrl: item.imageUrl,
+            categoryId: 1,
+            createdAt: "",
+            stock: 1
+        };
+
+        return {
+            props: { product },
+        };
+    } catch (error) {
+        console.error("Mahsulotni olishda xatolik:", error);
+        return {
+            notFound: true,
+        };
+    }
+};
