@@ -2,6 +2,7 @@
 import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import user from "../../assets/icons/user.svg";
 import React, { useState } from "react";
 import menu from "../../assets/images/menu.svg";
 import menu_x from "../../assets/icons/katalog_x.svg";
@@ -140,6 +141,12 @@ function NavCenter() {
                         </div>
                     )}
                 </div>
+                <Link href="/profile">
+                    <div className="flex flex-col items-center text-sm text-gray-800 cursor-pointer">
+                        <Image width={30} height={30} src={user} alt="user" />
+                        <div>Profile</div>
+                    </div>
+                </Link>
             </div>
             <KatalogMadal katalog={katalog} setKatalog={setKatalog} />
         </div>
