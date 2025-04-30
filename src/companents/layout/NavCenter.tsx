@@ -3,7 +3,7 @@ import { ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import user from "../../assets/icons/user.svg";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import menu from "../../assets/images/menu.svg";
 import menu_x from "../../assets/icons/katalog_x.svg";
 import search from "../../assets/icons/search.svg";
@@ -18,8 +18,39 @@ function NavCenter() {
     const [katalog, setKatalog] = useState(false);
     const [showCart, setShowCart] = useState(false);
     const [showFavorites, setShowFavorites] = useState(false);
+    const [products, setProducts] = useState<any[]>([]);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [searchResults, setSearchResults] = useState<any[]>([]);
     const favorites = useSelector((state: RootState) => state.favorites.items);
     const items = useSelector((state: RootState) => state.cart.items);
+
+    useEffect(() => {
+        const fetchProducts = async () => {
+            try {
+                const response = await fetch(
+                    "https://nt.softly.uz/api/front/products"
+                );
+                const data = await response.json();
+            } catch (error) {
+                console.error(error);
+            }
+        };
+        fetchProducts();
+    }, []);
+
+    useEffect(() => {
+        if (products.length > 0) {
+            handleSearch();
+        }
+    }, [searchQuery, products]);
+
+    const handleSearch = () => {
+        const filtered = (products || []).filter((item) =>
+            item.name.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setSearchResults(filtered);
+    };
+
     return (
         <div>
             <div className="max-w-screen-xl mx-auto pt-6 flex flex-wrap justify-between items-center gap-4 px-4 md:px-12">
@@ -48,6 +79,8 @@ function NavCenter() {
                         className="flex-1 px-4 py-2 text-gray-700 placeholder-gray-400 focus:outline-none"
                         type="text"
                         placeholder="Qidirish..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <button className="bg-green-600 hover:bg-green-700 px-4 py-2 transition-colors text-white">
                         <Image
@@ -148,6 +181,28 @@ function NavCenter() {
                     </div>
                 </Link>
             </div>
+
+            {searchResults.length > 0 && (
+                <div className="max-w-screen-xl mx-auto mt-4 px-4 md:px-12">
+                    <h2 className="text-2xl font-bold mb-4">
+                        Qidiruv natijalari:
+                    </h2>
+                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {searchResults.map((item) => (
+                            <li
+                                key={item.id}
+                                className="border p-4 rounded shadow"
+                            >
+                                <p className="font-semibold">{item.name}</p>
+                                <p className="text-gray-600">
+                                    {item.price} so‘m
+                                </p>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+            )}
+
             <KatalogMadal katalog={katalog} setKatalog={setKatalog} />
         </div>
     );

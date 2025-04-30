@@ -1,9 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { CardsDataType } from "@/type/Types";
-
-interface FavoritesState {
-    items: CardsDataType[];
-}
+import { FavoritesState } from "@/type/Types";
 
 const initialState: FavoritesState = {
     items: [],

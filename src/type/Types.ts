@@ -58,4 +58,19 @@ export type AuthType = {
     password: string;
 };
 
-export type UserType = {}
+export type UserType = {};
+
+export type Order = {
+    id: number;
+    name: string;
+    price: string;
+    imageUrl: string;
+};
+
+export type FavoritesState = {
+    items: CardsDataType[];
+};
+
+export type CartState = {
+    items: ProductIdType[];
+};

@@ -6,11 +6,77 @@ import Cards from "../_companents/Cards";
 import { ProductIdType } from "@/type/Types";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { useDispatch } from "react-redux";
+import { addOrder } from "@/store/slices/ordersSlice";
 
 function Product() {
     const [produktId, setProduktId] = useState<ProductIdType | null>(null);
     const params = useRouter();
     const { id } = params.query;
+
+    const dispatch = useDispatch();
+
+    const handleBuy = () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+
+                    const address =
+                        "Latitude: " + latitude + ", Longitude: " + longitude;
+
+                    const token = localStorage.getItem("authToken");
+
+                    axios
+                        .post(
+                            "https://nt.softly.uz/api/front/orders",
+                            {
+                                address: address,
+                                items: [
+                                    {
+                                        productId: 1,
+                                        quantity: 2,
+                                    },
+                                ],
+                            },
+                            {
+                                headers: {
+                                    Authorization: "Bearer " + token,
+                                    "Content-Type": "application/json",
+                                },
+                            }
+                        )
+                        .then(function (response) {
+                            console.log(
+                                "Buyurtma muvaffaqiyatli yuborildi:",
+                                response.data
+                            );
+                            dispatch(addOrder({
+                                id: produktId!.id,
+                                name: produktId!.name,
+                                price: produktId!.price,
+                                imageUrl: produktId!.imageUrl,
+                            }));
+                        })
+                        .catch(function (error) {
+                            console.error(
+                                "Xatolik:",
+                                error.response?.data || error.message
+                            );
+                        });
+                },
+                function (error) {
+                    console.error(
+                        "Lokatsiyani olishda xatolik:",
+                        error.message
+                    );
+                }
+            );
+        } else {
+            console.log("Brauzeringiz geolokatsiyani qo‘llab-quvvatlamaydi.");
+        }
+    };
 
     useEffect(() => {
         if (!id) return;
@@ -75,7 +141,10 @@ function Product() {
                         </p>
 
                         <div className="mt-6 flex flex-col sm:flex-row gap-4">
-                            <button className="px-6 py-2 bg-amber-500 text-white rounded-2xl hover:bg-amber-600 transition shadow">
+                            <button
+                                onClick={handleBuy}
+                                className="px-6 py-2 bg-amber-500 text-white rounded-2xl hover:bg-amber-600 transition shadow"
+                            >
                                 Xarid qilish
                             </button>
                             <button className="px-6 py-2 bg-gray-200 text-gray-800 rounded-2xl hover:bg-gray-300 transition shadow">

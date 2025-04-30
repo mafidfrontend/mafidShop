@@ -44,7 +44,7 @@ function ProductCard({ item }: { item?: CardsDataType }) {
                             </div>
                         )}
                         <p className="text-gray-700 text-sm line-clamp-2">
-                            {item.description || "Tavsif mavjud emas"}
+                            {item.name || "Tavsif mavjud emas"}
                         </p>
                     </div>
                 </Link>
