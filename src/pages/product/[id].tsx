@@ -42,22 +42,24 @@ function Product() {
                             },
                             {
                                 headers: {
-                                    Authorization: "Bearer " + token,
-                                    "Content-Type": "application/json",
+                                    Authorization: `Bearer ${token}`,
                                 },
                             }
                         )
-                        .then(function (response) {
+                        .then((response) => {
                             console.log(
                                 "Buyurtma muvaffaqiyatli yuborildi:",
                                 response.data
                             );
-                            dispatch(addOrder({
-                                id: produktId!.id,
-                                name: produktId!.name,
-                                price: produktId!.price,
-                                imageUrl: produktId!.imageUrl,
-                            }));
+
+                            dispatch(
+                                addOrder({
+                                    id: produktId!.id,
+                                    name: produktId!.name,
+                                    price: produktId!.price,
+                                    imageUrl: produktId!.imageUrl,
+                                })
+                            );
                         })
                         .catch(function (error) {
                             console.error(
