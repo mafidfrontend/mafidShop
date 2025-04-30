@@ -6,6 +6,7 @@ import Cards from "../_companents/Cards";
 import { ProductIdType } from "@/type/Types";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import { toast } from 'sonner';
 import { useDispatch } from "react-redux";
 import { addOrder } from "@/store/slices/ordersSlice";
 
@@ -35,8 +36,8 @@ function Product() {
                                 address: address,
                                 items: [
                                     {
-                                        productId: 1,
-                                        quantity: 2,
+                                        productId: produktId?.id,
+                                        quantity: produktId?.stock,
                                     },
                                 ],
                             },
@@ -46,11 +47,8 @@ function Product() {
                                 },
                             }
                         )
-                        .then((response) => {
-                            console.log(
-                                "Buyurtma muvaffaqiyatli yuborildi:",
-                                response.data
-                            );
+                        .then(() => {
+                            toast.success("Buyurtma muvaffaqiyatli yuborildi")
 
                             dispatch(
                                 addOrder({
@@ -61,11 +59,8 @@ function Product() {
                                 })
                             );
                         })
-                        .catch(function (error) {
-                            console.error(
-                                "Xatolik:",
-                                error.response?.data || error.message
-                            );
+                        .catch((err) => {
+                            toast.error(`${err.message}. There was a problem with your request.`);
                         });
                 },
                 function (error) {
