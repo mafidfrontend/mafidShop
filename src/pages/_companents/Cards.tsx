@@ -21,6 +21,7 @@ function Cards() {
             )
             .then((res) => {
                 setProducts(res.data.items);
+                setIsLoading(false);
             })
     }, [page]);
 

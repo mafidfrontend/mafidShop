@@ -6,9 +6,10 @@ import Cards from "../_companents/Cards";
 import { ProductIdType } from "@/type/Types";
 import { useRouter } from "next/router";
 import Head from "next/head";
-import { toast } from 'sonner';
+import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { addOrder } from "@/store/slices/ordersSlice";
+import { addToCart } from "@/store/slices/cartSlice";
 
 function Product() {
     const [produktId, setProduktId] = useState<ProductIdType | null>(null);
@@ -48,7 +49,7 @@ function Product() {
                             }
                         )
                         .then(() => {
-                            toast.success("Buyurtma muvaffaqiyatli yuborildi")
+                            toast.success("Buyurtma muvaffaqiyatli yuborildi");
 
                             dispatch(
                                 addOrder({
@@ -60,7 +61,9 @@ function Product() {
                             );
                         })
                         .catch((err) => {
-                            toast.error(`${err.message}. There was a problem with your request.`);
+                            toast.error(
+                                `${err.message}. There was a problem with your request.`
+                            );
                         });
                 },
                 function (error) {
@@ -144,7 +147,15 @@ function Product() {
                             >
                                 Xarid qilish
                             </button>
-                            <button className="px-6 py-2 bg-gray-200 text-gray-800 rounded-2xl hover:bg-gray-300 transition shadow">
+                            <button
+                                onClick={() => {
+                                    dispatch(addToCart(produktId));
+                                    toast.success(
+                                        `${produktId.name} savatga qo'shildi!`
+                                    );
+                                }}
+                                className="px-6 py-2 bg-gray-200 text-gray-800 rounded-2xl hover:bg-gray-300 transition shadow"
+                            >
                                 Savatga qo‘shish
                             </button>
                         </div>

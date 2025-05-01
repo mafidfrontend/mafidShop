@@ -9,6 +9,7 @@ import { Heart } from "lucide-react";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
+import { toast } from "sonner";
 
 function ProductCard({ item }: { item?: CardsDataType }) {
     if (!item) {
@@ -53,7 +54,10 @@ function ProductCard({ item }: { item?: CardsDataType }) {
                             {item.price ? `$${item.price}` : "Narx noma’lum"}
                         </p>
                         <button
-                            onClick={() => dispatch(addToCart(item))}
+                            onClick={() => {
+                                dispatch(addToCart(item))
+                                toast.success(`${item.name} savatga qo'shildi!`);
+                            }}
                             className="border-2 border-blue-500 p-2 rounded-md hover:bg-blue-800 hover:text-white transition"
                         >
                             <Image
@@ -65,7 +69,15 @@ function ProductCard({ item }: { item?: CardsDataType }) {
                         </button>
                         <div className="absolute top-3 right-3">
                             <button
-                                onClick={() => dispatch(toggleFavorite(item))}
+                                onClick={() => {
+                                    dispatch(toggleFavorite(item))
+                                    if (!isFavorite) {
+                                        toast.success(`${item.name} sevimlilarga qo'shildi`);
+                                    } else {
+                                        toast.info(`${item.name} sevimlilardan olib tashlandi`);
+                                    }
+
+                                }}
                                 className={`p-2 rounded-md transition ${
                                     isFavorite
                                         ? "bg-red-500 text-white"
