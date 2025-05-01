@@ -9,7 +9,6 @@ import { Heart } from "lucide-react";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { toggleFavorite } from "@/store/slices/favoritesSlice";
-import Head from "next/head";
 
 function ProductCard({ item }: { item?: CardsDataType }) {
     if (!item) {
