@@ -1,5 +1,5 @@
 "use client";
-import { ShoppingBag } from "lucide-react";
+import { LucideTableProperties, ShoppingBag } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import user from "../../assets/icons/user.svg";
@@ -31,6 +31,7 @@ function NavCenter() {
                     "https://nt.softly.uz/api/front/products"
                 );
                 const data = await response.json();
+                setProducts(data)
             } catch (error) {
                 console.error(error);
             }
@@ -53,7 +54,7 @@ function NavCenter() {
 
     return (
         <div>
-            <div className="max-w-screen-xl mx-auto pt-6 flex flex-wrap justify-between items-center gap-4 px-4 md:px-12">
+            <div className="max-w-screen-xl mx-auto pt-6 flex items-start justify-between gap-4 px-4 md:px-12">
                 <Link href="/">
                     <div className="flex items-center gap-2 cursor-pointer">
                         <ShoppingBag className="w-6 h-6 text-green-800" />
@@ -178,6 +179,12 @@ function NavCenter() {
                     <div className="flex flex-col items-center text-sm text-gray-800 cursor-pointer">
                         <Image width={30} height={30} src={user} alt="user" />
                         <div>Profile</div>
+                    </div>
+                </Link>
+                <Link href="/orders">
+                    <div className="flex flex-col items-center ml-5 text-sm text-gray-800 cursor-pointer">
+                        <LucideTableProperties />
+                        <div>Orders</div>
                     </div>
                 </Link>
             </div>
