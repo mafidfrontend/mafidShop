@@ -7,18 +7,18 @@ import { RootState } from "@/store/store";
 
 const ProfilePage = () => {
     const orders = useSelector((state: RootState) => state.orders.list);
-    const userAbout = localStorage.getItem("username")
+    const userAbout = useSelector((state: RootState) => state.authSlice.user);
 
     return (
         <div className="max-w-6xl mx-auto p-6 mt-10 mb-10">
             <div className="grid md:grid-cols-3 gap-8">
                 <div className="bg-white shadow-md rounded-2xl p-6 flex flex-col items-center">
                     <Image src={user} alt="User avatar" width={80} height={80} className="rounded-full" />
-                    <p className="text-gray-500">{userAbout ? userAbout : "User"}</p>
+                    <p className="text-gray-500">{userAbout ? userAbout.name : "User"}</p>
                     <div className="mt-6 w-full">
                         <h3 className="text-lg font-medium mb-2 border-b pb-1">Shaxsiy ma'lumotlar</h3>
                         <ul className="text-sm space-y-1 text-gray-700 mt-2">
-                            <li><span className="font-medium">Email:</span>{userAbout ? userAbout : "User"}</li>
+                            <li><span className="font-medium">Email:</span>{userAbout ? userAbout.name : "User"}</li>
                         </ul>
                     </div>
                 </div>
