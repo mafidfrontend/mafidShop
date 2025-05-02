@@ -1,5 +1,5 @@
 import ProductCard from "@/companents/ProductCard";
-import PaginationControls from "@/pages/_companents/PaginationControls";
+import PaginationControls from "@/companents/PaginationControls";
 import { CategoriesPageProps } from "@/type/Types";
 import axios from "axios";
 import { GetServerSideProps } from "next";

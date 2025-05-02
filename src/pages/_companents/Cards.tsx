@@ -1,10 +1,10 @@
 "use client";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { CardsDataType, CategoriesProductIdTYpe } from "@/type/Types";
+import { CategoriesProductIdTYpe } from "@/type/Types";
 import ProductCard from "@/companents/ProductCard";
 import Loading from "./Loading";
-import PaginationControls from "./PaginationControls";
+import PaginationControls from "@/companents/PaginationControls";
 
 function Cards() {
     const [products, setProducts] = useState<CategoriesProductIdTYpe>();

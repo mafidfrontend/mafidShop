@@ -4,7 +4,7 @@ import Image from "next/image";
 import user from "@/assets/icons/user.svg";
 import axios from "axios";
 import { Order1 } from "@/type/Types";
-import PaginationControls from "../_companents/PaginationControls";
+import PaginationControls from "../../companents/PaginationControls";
 
 const ProfilePage = () => {
     const [orders, setOrders] = useState<Order1[]>([]);
