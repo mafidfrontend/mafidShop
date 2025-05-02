@@ -17,6 +17,7 @@ export type CategoriesProductIdTYpe = {
               name: string;
               price: string;
               stock: number;
+              count: number;
           }[];
     limit: number;
     page: number;
