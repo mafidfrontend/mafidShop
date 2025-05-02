@@ -30,7 +30,7 @@ const ProfilePage = () => {
             })
             .catch((err) => console.error(err));
     }, [page]);
-    const totalPages = 10;
+    const totalPages = limit;
 
     return (
         <div className="max-w-6xl mx-auto p-6 mt-10 mb-10">
