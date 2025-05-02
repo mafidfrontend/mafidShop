@@ -77,3 +77,32 @@ export type FavoritesState = {
 export type CartState = {
     items: ProductIdType[];
 };
+
+export type Product = {
+  id: number;
+  name: string;
+  description: string;
+  imageUrl: string;
+  price: number;
+  stock: number;
+  categoryId: number;
+  createdAt: string;
+}
+
+export type OrderItem = {
+  id: number;
+  productId: number;
+  orderId: number;
+  price: number;
+  quantity: number;
+  product: Product;
+}
+
+export type Order1 = {
+  id: number;
+  customerId: number;
+  totalPrice: number;
+  status: string;
+  createdAt: string;
+  items: OrderItem[];
+}
