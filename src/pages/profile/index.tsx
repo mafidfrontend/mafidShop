@@ -2,20 +2,20 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import user from "@/assets/icons/user.svg";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import axios from "axios";
 import { Order1 } from "@/type/Types";
 import PaginationControls from "../_companents/PaginationControls";
 
 const ProfilePage = () => {
-    const userAbout = useSelector((state: RootState) => state.authSlice.user);
     const [orders, setOrders] = useState<Order1[]>([]);
     const [page, setPage] = useState(1);
     const limit = 10;
+    const [username, setUsername] = useState<string | null>(null);
 
     useEffect(() => {
         const token = localStorage.getItem("authToken");
+        const storedUsername = localStorage.getItem("username");
+        setUsername(storedUsername);
         axios
             .get(
                 `https://nt.softly.uz/api/front/orders?limit=${limit}&page=${page}&order=ASC&status=pending`,
@@ -30,7 +30,14 @@ const ProfilePage = () => {
             })
             .catch((err) => console.error(err));
     }, [page]);
+
     const totalPages = limit;
+
+    if (!username) return <p>Yuklanmoqda...</p>;
+
+    console.log(username?.split("@")[0]);
+
+    const name = username?.split("@")[0];
 
     return (
         <div className="max-w-6xl mx-auto p-6 mt-10 mb-10">
@@ -43,9 +50,7 @@ const ProfilePage = () => {
                         height={80}
                         className="rounded-full"
                     />
-                    <p className="text-gray-500">
-                        {userAbout ? userAbout.name : "User"}
-                    </p>
+                    <p className="text-gray-500">{username ? name : "User"}</p>
                     <div className="mt-6 w-full">
                         <h3 className="text-lg font-medium mb-2 border-b pb-1">
                             Shaxsiy ma'lumotlar
@@ -53,7 +58,7 @@ const ProfilePage = () => {
                         <ul className="text-sm space-y-1 text-gray-700 mt-2">
                             <li>
                                 <span className="font-medium">Email:</span>{" "}
-                                {userAbout ? userAbout.name : "Noma'lum"}
+                                {username ? username : "Noma'lum"}
                             </li>
                         </ul>
                     </div>
@@ -113,7 +118,11 @@ const ProfilePage = () => {
                             ))}
                         </div>
                     )}
-                    <PaginationControls currentPage={page} totalPages={totalPages} onPageChange={setPage}  />
+                    <PaginationControls
+                        currentPage={page}
+                        totalPages={totalPages}
+                        hrefBuilder={(p) => `/profile?page=${p}`}
+                    />
                 </div>
             </div>
         </div>

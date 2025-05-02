@@ -21,7 +21,7 @@ function Cards() {
             .then((res) => {
                 setProducts(res.data);
                 setIsLoading(false);
-            })
+            });
     }, [page]);
 
     if (isLoading) return <Loading />;
@@ -36,7 +36,11 @@ function Cards() {
                 ))}
             </div>
 
-            <PaginationControls currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                hrefBuilder={(page) => `/products?page=${page}`}
+            />
         </div>
     );
 }

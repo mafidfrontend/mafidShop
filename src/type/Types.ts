@@ -106,3 +106,9 @@ export type Order1 = {
   createdAt: string;
   items: OrderItem[];
 }
+
+export type CategoriesPageProps = {
+  initialData: CategoriesProductIdTYpe;
+  categoryId: string;
+  currentPage: number;
+};
