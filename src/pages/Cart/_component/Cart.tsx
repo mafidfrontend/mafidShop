@@ -2,16 +2,17 @@
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/store/store";
 import { toast } from "sonner";
-import { clearCart, removeFromCart } from "@/store/slices/cartSlice";
+import { addToCart, clearCart, removeFromCart } from "@/store/slices/cartSlice";
 import axios from "axios";
 import { addOrder } from "@/store/slices/ordersSlice";
+import { useRouter } from "next/router";
 
 function Cart() {
-    const orders = useSelector((state: RootState) => state.orders.list);
+    const router = useRouter();
     const items = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
 
-    const handleDelete = (id: number) => {
+    const handleDecrease = (id: number) => {
         dispatch(removeFromCart(id));
     };
 
@@ -20,9 +21,7 @@ function Cart() {
             toast.warning("Savat bo‘sh");
             return;
         }
-
-        toast.loading("Buyurtma yuborilmoqda...");
-
+        toast.info("Buyurtma yuborilmoqda...");
         navigator.geolocation.getCurrentPosition(
             (position) => {
                 const latitude = position.coords.latitude;
@@ -35,7 +34,7 @@ function Cart() {
                     address,
                     items: items.map((item) => ({
                         productId: item.id,
-                        quantity: item.stock,
+                        quantity: item.count,
                     })),
                 };
 
@@ -72,6 +71,7 @@ function Cart() {
                         });
 
                         dispatch(clearCart());
+                        router.push("/profile");
                     })
                     .catch(() => {
                         toast.error("Buyurtma yuborishda xatolik");
@@ -99,15 +99,28 @@ function Cart() {
                                 <div>
                                     <p className="font-medium">{item.name}</p>
                                     <p className="text-sm text-gray-600">
-                                        {item.price} so‘m
+                                        {item.price} $
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        Soni: {item.count}
                                     </p>
                                 </div>
-                                <button
-                                    onClick={() => handleDelete(item.id)}
-                                    className="text-red-500 hover:underline text-sm"
-                                >
-                                    O‘chirish
-                                </button>
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleDecrease(item.id)}
+                                        className="text-red-500 hover:underline text-lg"
+                                    >
+                                        −
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            dispatch(addToCart(item))
+                                        }
+                                        className="text-green-500 hover:underline text-lg"
+                                    >
+                                        +
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>

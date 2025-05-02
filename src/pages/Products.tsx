@@ -31,6 +31,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         categoryId: 1,
         createdAt: "",
         stock: 1,
+        count: 1,
     };
 
     return {

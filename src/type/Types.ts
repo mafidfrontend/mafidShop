@@ -32,6 +32,7 @@ export type ProductIdType = {
     name: string;
     price: string;
     stock: number;
+    count: number;
 };
 
 export type CardsDataType = {
@@ -43,6 +44,7 @@ export type CardsDataType = {
     name: string;
     price: string;
     stock: number;
+    count: number;
 };
 
 export type BannerType = {
