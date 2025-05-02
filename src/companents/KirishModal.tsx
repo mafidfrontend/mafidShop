@@ -34,7 +34,7 @@ export function KirishModal() {
 
         if (token && username) {
             setIsLoggedIn(true);
-            setUsernameDisplay(username);
+            setUsernameDisplay(username.split("@")[0]);
         }
     }, []);
 
@@ -49,12 +49,9 @@ export function KirishModal() {
             );
             localStorage.setItem("authToken", response.data.accessToken);
             localStorage.setItem("username", values.email);
-            if (response) {
-                setOpen(false);
-            }
             setIsLoggedIn(true);
-            const username = values.email.split("@")[0];
-            setUsernameDisplay(username);
+            setUsernameDisplay(values.email.split("@")[0]);
+            setOpen(false);
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 console.error("Server javobi:", error.response?.data);
@@ -68,6 +65,13 @@ export function KirishModal() {
         }
     }
 
+    function handleLogout() {
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("username");
+        setIsLoggedIn(false);
+        setUsernameDisplay("");
+    }
+
     return (
         <Dialog onOpenChange={setOpen} open={open}>
             <DialogTrigger asChild>
@@ -78,51 +82,57 @@ export function KirishModal() {
                     </DialogTitle>
                 </div>
             </DialogTrigger>
-            <DialogContent
-                className="sm:max-w-[425px] bg-white"
-                aria-describedby={undefined}
-            >
-                <Form {...form}>
-                    <form
-                        onSubmit={form.handleSubmit(onSubmit)}
-                        className="space-y-8"
-                    >
-                        <FormField
-                            name="email"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Username</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Ismingizni kiriting"
-                                            autoComplete="username"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            name="password"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Password</FormLabel>
-                                    <FormControl>
-                                        <Input
-                                            placeholder="Parolingizni kiriting"
-                                            type="password"
-                                            autoComplete="password"
-                                            {...field}
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <Button type="submit">Submit</Button>
-                    </form>
-                </Form>
+            <DialogContent className="sm:max-w-[425px] bg-white" aria-describedby={undefined}>
+                {isLoggedIn ? (
+                    <div className="flex flex-col items-center gap-4">
+                        <p className="text-lg">Salom, {usernameDisplay}!</p>
+                        <Button variant="destructive" onClick={handleLogout}>
+                            Chiqish
+                        </Button>
+                    </div>
+                ) : (
+                    <Form {...form}>
+                        <form
+                            onSubmit={form.handleSubmit(onSubmit)}
+                            className="space-y-8"
+                        >
+                            <FormField
+                                name="email"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Username</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Ismingizni kiriting"
+                                                autoComplete="username"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                name="password"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Password</FormLabel>
+                                        <FormControl>
+                                            <Input
+                                                placeholder="Parolingizni kiriting"
+                                                type="password"
+                                                autoComplete="password"
+                                                {...field}
+                                            />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <Button type="submit">Kirish</Button>
+                        </form>
+                    </Form>
+                )}
             </DialogContent>
         </Dialog>
     );

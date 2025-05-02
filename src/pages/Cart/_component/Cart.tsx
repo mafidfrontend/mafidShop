@@ -6,11 +6,25 @@ import { addToCart, clearCart, removeFromCart } from "@/store/slices/cartSlice";
 import axios from "axios";
 import { addOrder } from "@/store/slices/ordersSlice";
 import { useRouter } from "next/router";
+import {
+    Dialog,
+    DialogTrigger,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogDescription,
+    DialogFooter,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { useState } from "react";
 
 function Cart() {
     const router = useRouter();
     const items = useSelector((state: RootState) => state.cart.items);
     const dispatch = useDispatch();
+
+    const [open, setOpen] = useState(false);
+    const [address, setAddress] = useState("");
 
     const handleDecrease = (id: number) => {
         dispatch(removeFromCart(id));
@@ -21,66 +35,54 @@ function Cart() {
             toast.warning("Savat bo‘sh");
             return;
         }
+        setOpen(true);
+    };
+
+    const handleConfirmOrder = () => {
+        if (!address.trim()) {
+            toast.warning("Iltimos, manzilni kiriting");
+            return;
+        }
+
+        const token = localStorage.getItem("authToken");
+
+        const requestBody = {
+            address,
+            items: items.map((item) => ({
+                productId: item.id,
+                quantity: item.count,
+            })),
+        };
+
         toast.info("Buyurtma yuborilmoqda...");
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
-                const address = `Latitude: ${latitude}, Longitude: ${longitude}`;
 
-                const token = localStorage.getItem("authToken");
+        axios
+            .post("https://nt.softly.uz/api/front/orders", requestBody, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(() => {
+                toast.success("Buyurtma muvaffaqiyatli yuborildi");
 
-                const requestBody = {
-                    address,
-                    items: items.map((item) => ({
-                        productId: item.id,
-                        quantity: item.count,
-                    })),
-                };
+                items.forEach((item) => {
+                    dispatch(
+                        addOrder({
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                            imageUrl: item.imageUrl,
+                        })
+                    );
+                });
 
-                axios
-                    .post(
-                        "https://nt.softly.uz/api/front/orders",
-                        requestBody,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    )
-                    .then(() => {
-                        toast.success("Buyurtma muvaffaqiyatli yuborildi");
-                        setTimeout(
-                            () => toast.info("Buyurtma yuborishga chiqarildi"),
-                            2000
-                        );
-                        setTimeout(
-                            () => toast.success("Buyurtma qabul qilindi"),
-                            4000
-                        );
-
-                        items.forEach((item) => {
-                            dispatch(
-                                addOrder({
-                                    id: item.id,
-                                    name: item.name,
-                                    price: item.price,
-                                    imageUrl: item.imageUrl,
-                                })
-                            );
-                        });
-
-                        dispatch(clearCart());
-                        router.push("/profile");
-                    })
-                    .catch(() => {
-                        toast.error("Buyurtma yuborishda xatolik");
-                    });
-            },
-            () => {
-                toast.error("Geolokatsiya olinmadi");
-            }
-        );
+                dispatch(clearCart());
+                setOpen(false);
+                router.push("/profile");
+            })
+            .catch(() => {
+                toast.error("Buyurtma yuborishda xatolik");
+            });
     };
 
     return (
@@ -135,6 +137,29 @@ function Cart() {
                     </div>
                 </>
             )}
+            <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Manzilni kiriting</DialogTitle>
+                        <DialogDescription>
+                            Buyurtma qayerga yetkazilishi kerakligini yozing
+                        </DialogDescription>
+                    </DialogHeader>
+                    <Input
+                        placeholder="Masalan: Toshkent, Chilonzor, 12-uy"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                    />
+                    <DialogFooter>
+                        <button
+                            onClick={handleConfirmOrder}
+                            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                        >
+                            Yuborish
+                        </button>
+                    </DialogFooter>
+                </DialogContent>
+            </Dialog>
         </div>
     );
 }
